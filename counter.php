@@ -20,9 +20,10 @@ function getCounter($key) {
 // Povećavanje broja poseta
 increaseCounter('visits');
 
-// Dobijanje ukupnog broja poseta ako je parametar 'visits'
-$get = isset($_GET['get']) ? $_GET['get'] : '';
+// Dobijanje parametra za dobijanje broja
+$get = $_GET['get'];
 
+// Dobijanje ukupnog broja poseta
 if ($get === 'visits') {
     echo getCounter('visits');
 }
