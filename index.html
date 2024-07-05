@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obaveštenje</title>
+</head>
+<body>
+    <div id="info" style="position: absolute; top: 10px; left: 10px; background-color: lightgrey; padding: 10px; border-radius: 5px;">
+        <h3>Informacije o posetiocu</h3>
+        <p id="ip">IP adresa: Učitavanje...</p>
+        <p id="device">Uređaj: Učitavanje...</p>
+        <p id="email">Email: Učitavanje...</p>
+        <p id="location">Lokacija: Učitavanje...</p>
+    </div>
+    
+    <script>
+        // Funkcija za dobijanje IP adrese
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Greška pri dobijanju IP adrese:', error);
+                return 'Nepoznato';
+            }
+        }
+
+        // Funkcija za dobijanje geolokacije na osnovu IP adrese
+        async function getGeolocation(ip) {
+            try {
+                const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=YOUR_API_KEY&ip=${ip}`);
+                const data = await response.json();
+                return `${data.city}, ${data.country_name}`;
+            } catch (error) {
+                console.error('Greška pri dobijanju geolokacije:', error);
+                return 'Nepoznato';
+            }
+        }
+
+        // Funkcija za dobijanje User-Agent podataka
+        function getUserAgent() {
+            return navigator.userAgent;
+        }
+
+        // Prikazivanje informacija na stranici
+        window.onload = async function() {
+            const ip = await getIPAddress();
+            const userAgent = getUserAgent();
+            const location = await getGeolocation(ip);
+
+            document.getElementById('ip').innerText = `IP adresa: ${ip}`;
+            document.getElementById('device').innerText = `Uređaj: ${userAgent}`;
+            document.getElementById('location').innerText = `Lokacija: ${location}`;
+        };
+    </script>
+</body>
+</html>
